@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model academies {
+  id    Int     @id @default(autoincrement())
+  name  String? @db.VarChar(255)
+  year  Int?
+  img   String? @db.VarChar(255)
+  url   String? @db.VarChar(255)
+  place String? @db.VarChar(255)
+  order Int     @default(0)
+}
+
+model certificates {
+  id          Int     @id @default(autoincrement())
+  name        String? @db.VarChar(255)
+  year        String? @db.VarChar(255)
+  place       String? @db.VarChar(255)
+  url         String? @db.VarChar(255)
+  img         String? @db.VarChar(255)
+  time        String? @db.VarChar(255)
+  description String? @db.VarChar(255)
+  order       Int     @default(0)
+}
+
+model challenges {
+  id          Int     @id @default(autoincrement())
+  name        String? @db.VarChar(255)
+  url         String? @db.VarChar(255)
+  description String? @db.VarChar(255)
+  img         String? @db.VarChar(255)
+  order       Int     @default(0)
+}
+
+model hobbyprojects {
+  id          Int       @id @default(autoincrement())
+  name        String?   @db.VarChar(255)
+  year        String?   @db.VarChar(255)
+  img         String?   @db.VarChar(255)
+  url         String?   @db.VarChar(255)
+  description String?   @db.Text
+  start       DateTime? @db.Date
+  end         DateTime? @db.Date
+  order       Int       @default(0)
+}
+
+model personalprojects {
+  id          Int       @id @default(autoincrement())
+  name        String?   @db.VarChar(255)
+  description String?   @db.Text
+  img         String?   @db.VarChar(255)
+  year        String?   @db.VarChar(255)
+  url         String?   @db.VarChar(255)
+  start       DateTime? @db.Date
+  end         DateTime? @db.Date
+  order       Int       @default(0)
+}
+
+model profesionals {
+  id          Int       @id @default(autoincrement())
+  name        String?   @db.VarChar(255)
+  img         String?   @db.VarChar(255)
+  year        String?   @db.VarChar(255)
+  link        String?   @db.VarChar(255)
+  description String?   @db.Text
+  start       DateTime? @db.Date
+  end         DateTime? @db.Date
+  updateAt    DateTime? @db.DateTime(0)
+  createdAt   DateTime? @db.DateTime(0)
+  order       Int       @default(0)
+}
+
+model technologies {
+  id             Int     @id @default(autoincrement())
+  name           String? @db.VarChar(255)
+  img            String? @db.VarChar(255)
+  url            String? @db.VarChar(255)
+  primaryColor   String? @db.VarChar(255)
+  secundaryColor String? @db.VarChar(255)
+  description    String? @db.VarChar(255)
+  order          Int     @default(0)
+}
