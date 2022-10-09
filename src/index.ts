@@ -1,12 +1,15 @@
 import express from 'express';
 import technologiesRouter from './routes/technologies';
-
+import { swaggerDocument } from './swagger';
 const app = express();
 const port = 3001;
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express')
 
 app.use(express.json());
 app.use(cors());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 
 app.get('/', (_, res) => {
