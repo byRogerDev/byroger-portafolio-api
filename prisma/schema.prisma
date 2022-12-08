@@ -38,51 +38,138 @@ model challenges {
   order       Int     @default(0)
 }
 
-model hobbyprojects {
-  id          Int       @id @default(autoincrement())
-  name        String?   @db.VarChar(255)
-  year        String?   @db.VarChar(255)
-  img         String?   @db.VarChar(255)
-  url         String?   @db.VarChar(255)
-  description String?   @db.Text
-  start       DateTime? @db.Date
-  end         DateTime? @db.Date
-  order       Int       @default(0)
+model HobbyProject {
+  id           Int                       @id @default(autoincrement())
+  name         String?                   @db.VarChar(255)
+  year         String?                   @db.VarChar(255)
+  img          String?                   @db.VarChar(255)
+  url          String?                   @db.VarChar(255)
+  description  String?                   @db.Text
+  start        DateTime?                 @db.Date
+  end          DateTime?                 @db.Date
+  order        Int                       @default(0)
+  technologies HobbyProjectTechnology[]
+  gallery      HobbyProjectGalleryItem[]
+
+  @@map("hobbyProjects")
 }
 
-model personalprojects {
-  id          Int       @id @default(autoincrement())
-  name        String?   @db.VarChar(255)
-  description String?   @db.Text
-  img         String?   @db.VarChar(255)
-  year        String?   @db.VarChar(255)
-  url         String?   @db.VarChar(255)
-  start       DateTime? @db.Date
-  end         DateTime? @db.Date
-  order       Int       @default(0)
+model HobbyProjectTechnology {
+  id           Int          @id @default(autoincrement())
+  idHobby      Int          @db.UnsignedInt
+  hobbyProject HobbyProject @relation(fields: [idHobby], references: [id])
+  idTechnology Int          @db.UnsignedInt
+  technology   Technology   @relation(fields: [idTechnology], references: [id])
+
+  @@map("hobbyprojectstechnologies")
 }
 
-model profesionals {
-  id          Int       @id @default(autoincrement())
-  name        String?   @db.VarChar(255)
-  img         String?   @db.VarChar(255)
-  year        String?   @db.VarChar(255)
-  link        String?   @db.VarChar(255)
-  description String?   @db.Text
-  start       DateTime? @db.Date
-  end         DateTime? @db.Date
-  updateAt    DateTime? @db.DateTime(0)
-  createdAt   DateTime? @db.DateTime(0)
-  order       Int       @default(0)
+model HobbyProjectGalleryItem {
+  id           Int          @id @default(autoincrement())
+  idHobby      Int          @default(1)
+  hobbyProject HobbyProject @relation(fields: [idHobby], references: [id])
+  name         String?      @db.VarChar(255)
+  src          String?      @db.VarChar(255)
+  type         String?      @db.VarChar(255)
+  size         Int?
+  order        Int?
+
+  @@map("hobbyprojectgalleryitems")
 }
 
-model technologies {
-  id             Int     @id @default(autoincrement())
-  name           String? @db.VarChar(255)
-  img            String? @db.VarChar(255)
-  url            String? @db.VarChar(255)
-  primaryColor   String? @db.VarChar(255)
-  secundaryColor String? @db.VarChar(255)
-  description    String? @db.VarChar(255)
-  order          Int     @default(0)
+model PersonalProject {
+  id           Int                           @id @default(autoincrement())
+  name         String?                       @db.VarChar(255)
+  description  String?                       @db.Text
+  img          String?                       @db.VarChar(255)
+  year         String?                       @db.VarChar(255)
+  url          String?                       @db.VarChar(255)
+  start        DateTime?                     @db.Date
+  end          DateTime?                     @db.Date
+  order        Int                           @default(0)
+  technologies PersonalProjectTechnology[]
+  gallery      PersonalProjectsGalleryItem[]
+
+  @@map("personalprojects")
+}
+
+model ProfesionalProject {
+  id           Int                              @id @default(autoincrement())
+  name         String?                          @db.VarChar(255)
+  img          String?                          @db.VarChar(255)
+  year         String?                          @db.VarChar(255)
+  link         String?                          @db.VarChar(255)
+  description  String?                          @db.Text
+  start        DateTime?                        @db.Date
+  end          DateTime?                        @db.Date
+  updateAt     DateTime?                        @db.DateTime(0)
+  createdAt    DateTime?                        @db.DateTime(0)
+  order        Int                              @default(0)
+  technologies ProfesionalProjectsTechnology[]
+  gallery      ProfesionalProjectsGalleryItem[]
+
+  @@map("profesionalprojects")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model ProfesionalProjectsTechnology {
+  id                 Int                @id @default(autoincrement())
+  idProfesional      Int                @db.UnsignedInt
+  profesionalProject ProfesionalProject @relation(fields: [idProfesional], references: [id])
+  idTechnology       Int                @db.UnsignedInt
+  technology         Technology         @relation(fields: [idTechnology], references: [id])
+
+  @@map("profesionalprojectstechnologies")
+}
+
+model Technology {
+  id                  Int                             @id @default(autoincrement())
+  name                String?                         @db.VarChar(255)
+  img                 String?                         @db.VarChar(255)
+  url                 String?                         @db.VarChar(255)
+  primaryColor        String?                         @db.VarChar(255)
+  secundaryColor      String?                         @db.VarChar(255)
+  description         String?                         @db.VarChar(255)
+  order               Int                             @default(0)
+  profesionalProjects ProfesionalProjectsTechnology[]
+  personalProjects    PersonalProjectTechnology[]
+  hobbyProjects       HobbyProjectTechnology[]
+
+  @@map("technologies")
+}
+
+model ProfesionalProjectsGalleryItem {
+  id                   Int                @id @default(autoincrement())
+  idProfesionalProject Int                @default(1)
+  profesionalProject   ProfesionalProject @relation(fields: [idProfesionalProject], references: [id])
+  name                 String?            @db.VarChar(255)
+  src                  String?            @db.VarChar(255)
+  type                 String?            @db.VarChar(255)
+  size                 Int?
+  order                Int?
+
+  @@map("ProfesionalProjectGalleryItems")
+}
+
+model PersonalProjectTechnology {
+  id                Int             @id @default(autoincrement())
+  idPersonalProject Int
+  personalProject   PersonalProject @relation(fields: [idPersonalProject], references: [id])
+  idTechnology      Int
+  technology        Technology      @relation(fields: [idTechnology], references: [id])
+
+  @@map("personalprojectstechnologies")
+}
+
+model PersonalProjectsGalleryItem {
+  id                Int             @id @default(autoincrement())
+  idPersonalProject Int             @default(1)
+  personalProject   PersonalProject @relation(fields: [idPersonalProject], references: [id])
+  name              String?         @db.VarChar(255)
+  src               String?         @db.VarChar(255)
+  type              String?         @db.VarChar(255)
+  size              Int?
+  order             Int?
+
+  @@map("personalprojectgalleryitems")
 }

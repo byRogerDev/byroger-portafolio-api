@@ -1,0 +1,3 @@
+# Prisma
+
+npx prisma generate

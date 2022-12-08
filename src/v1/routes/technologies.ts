@@ -1,5 +1,5 @@
 import express from 'express';
-import * as techService from '../services/technologyService';
+import * as techService from '../../services/technologyService';
 
 const router = express.Router();
 
