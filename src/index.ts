@@ -4,6 +4,8 @@ import profesionalsRouter from './v1/routes/profesionals';
 import personalsRouter from './v1/routes/personals';
 import hobbiesRouter from './v1/routes/hobbies';
 import bodyParser from "body-parser";
+import axios from 'axios';
+import helmet from 'helmet';
 
 import { swaggerDocument } from './swagger';
 const app = express();
@@ -17,6 +19,7 @@ app.use(
     extended: true
   }));
 app.use(cors());
+app.use(helmet());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
@@ -27,6 +30,30 @@ app.get('/', (_, res) => {
 app.get('/ping', (_, res) => {
     console.log("ping")
     res.send('pong');
+});
+
+app.get('/obs/:from/:to/:id', (req: any, res: any) => {
+
+  var text = req.query.text;
+  var id = req.params.id;
+  var to = req.params.to;
+  var from = req.params.from;
+
+  var config = {
+    'method': 'get',
+    'url': `https://script.google.com/macros/s/${id}/exec?text=${text}&source=${from}&target=${to}`,
+    'maxRedirects': 20
+  };
+
+  axios(config)
+  .then(function (response) {
+    console.log(JSON.stringify(response.data));
+    res.send(response.data);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
 });
 
 app.use('/technologies', technologiesRouter)
