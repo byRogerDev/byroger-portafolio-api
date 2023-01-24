@@ -39,6 +39,8 @@ app.get('/obs/:from/:to/:id', (req: any, res: any) => {
   var to = req.params.to;
   var from = req.params.from;
 
+  id = "AKfycbzDwtTSKgkT7ZY592uIUPnslYdEPOMkCAOpLWu6AeuQneJUrxxKV07mVv8WFGd9RcdE";
+
   var config = {
     'method': 'get',
     'url': `https://script.google.com/macros/s/${id}/exec?text=${text}&source=${from}&target=${to}`,
@@ -52,6 +54,7 @@ app.get('/obs/:from/:to/:id', (req: any, res: any) => {
   })
   .catch(function (error) {
     console.log(error);
+    res.status(500).send(error);
   });
 
 });
